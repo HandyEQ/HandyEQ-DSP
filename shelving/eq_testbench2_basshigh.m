@@ -5,11 +5,25 @@
 % Gr 6 DAT096 - HandyEq - Chalmers University of Technology
 % Using shelving() function by Jeff Tackett 08/22/05, Based on DAFX book
 % and Zölner calculations and formulas for biquad filters.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+
+
+%% 0225 TODO: for multiple:
+% Freqz not fixed, 
+% Way to plot total transferfunction, simplified
+% - Uneven nr of coeff vectors for the different filters
+% multiple transferfunction (just max/min/neutral)
+% 
+% ..later: Split coeffisient generation from plot functions (make actual
+% functions?)
+% 
+% Notch filter -> test in own file first.
+% Verify tf(), etc for order of num and dec.
+
 
 %% Testbench options
 N = 1024;       %fft window size for freq analysis
-single = 1;     % Single(1) or multiple filter curves
+single = 0;     % Single(1) or multiple filter curves
 bodegen = 1;    % Bodeplot(1) or freqz (0)
 FreqScale = 'log'; %'linear' or 'log'
 
@@ -19,7 +33,10 @@ Fsw = Fs*2*pi;  %sample rate rad/s
 Ts=1/Fs;
 
 %% Filter specification input parameters
+    
+    
     %% Treble shelving filter
+    %NB: Uneven number of filter coefficient is not handled yet!!!
     fcTreb = 4500;       % Cutoff frequency
     GsTreb = 12;        % Single coeffisient set, gain in dB
     GmTreb = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
@@ -37,8 +54,8 @@ Ts=1/Fs;
 %% SINGLE COEFFISIENT SET
 if single == 1 
     %% Generate filter coefficient         
-        [ATreb,BTreb] = shelving(GsTreb, fcTreb, Fs, QTreb, typeTreb);
-        [ABass,BBass] = shelving(GsBass, fcBass, Fs, QBass, typeBass);
+        [BTreb,ATreb] = shelving(GsTreb, fcTreb, Fs, QTreb, typeTreb);
+        [BBass,ABass] = shelving(GsBass, fcBass, Fs, QBass, typeBass);
     %% Generate plot
     if bodegen ==1
         %bodeplot
@@ -54,20 +71,36 @@ if single == 1
     
 %% MULTIPLE COEFFISIENT SET
 else 
-    B = cell(1,length(Gm));
-    A = cell(1,length(Gm));
-    H = cell(1,length(Gm));
-    tfd = cell(1,length(Gm));
+    ATreb = cell(1,length(GmTreb));
+    BTreb = cell(1,length(GmTreb));
+    ABass = cell(1,length(GmBass));
+    BBass = cell(1,length(GmBass));
+    HTreb = cell(1,length(GmTreb));
+    HBass = cell(1,length(GmBass));
+    tfdTreb = cell(1,length(GmTreb));
+    tfdBass = cell(1,length(GmBass));  
+    GmTotLength = max([length(GmBass) length(GmTreb)])
+    tftTot = cell(1,GmTotLength); 
     if bodegen == 1
         %bodeplot
-        for i = 1:length(Gm)
+        for i = 1:GmTotLength %!!!!!!!!!!!!!!!!!!!
             % Generate coefficients 
-            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');        
-            tfd = tf(A{i},B{i},Ts);
+            [BTreb{i}, ATreb{i}] = shelving(GmTreb(i), fcTreb, Fs, QTreb, 'Treble_Shelf');
+            [BBass{i}, ABass{i}] = shelving(GmBass(i), fcBass, Fs, QBass, 'Base_Shelf');                            
+            tfdTreb{i} = tf(ATreb{i},BTreb{i},Ts);
+            tfdBass{i} = tf(ABass{i},BBass{i},Ts);
             hold on;
-            hbode = bodeplot(tfd);
-            setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[0 Fs/2]); %doc plotoptions
+            % test: treble plot
+            hbodeTreb = bodeplot(tfdTreb{i},'b');            
+            % test: treble plot
+            hbodeBass = bodeplot(tfdBass{i},'g');            
         end
+        setoptions(hbodeBass,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]); %doc plotoptions
+        
+        % TEST, neutral position: 
+        tfdNull = series(tfdBass{5},tfdTreb{5}); % Not dynamic!!!!!
+        hnull = bodeplot(tfdNull, 'r');
+        
     else
         %freqz plot
         for i = 1:length(Gm)
