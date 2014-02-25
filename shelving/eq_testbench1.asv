@@ -17,10 +17,10 @@ single = 1;
 bodegen = 1;
 FreqScale = 'linear'; %'linear' or 'log'
 %% Filter specification/ input parameters
-fc = 800; % Cutoff frequency
+fc = 500; % Cutoff frequency
 Gs = 12;
 Gm = [-12 -9 -6 -3 0 3 6 9 12];  % Gain in db
-Q = 0.8; % Q-factor
+Q = 1; % Q-factor
 type = 'Base_Shelf'; % 'Base_Shelf' or 'Treble_Shelf'
 % fc and G is dependent, if fc = 500, and G = 12  "damping_band = -12db
 % until 500Hz, then magnitude is -12db+3db  (Need to check out this logic
@@ -28,7 +28,7 @@ type = 'Base_Shelf'; % 'Base_Shelf' or 'Treble_Shelf'
 
 
 %% SINGLE 
-if single == 0 
+if single == 1 
     %% Generate filter coefficient 
     [b,a] = shelving(Gs, fc, Fs, Q, type);
 
@@ -47,33 +47,28 @@ if single == 0
         
     else
         freqz(a,b,N,Fs);
-    end
+end
+
     %%MULTIPLE
 else 
     B = cell(1,length(Gm));
     A = cell(1,length(Gm));
     H = cell(1,length(Gm));
-    tfd = cell(1,length(Gm));
     %B=zeros(1,2);
     if bodegen == 1
-        for i = 1:length(Gm)            
-            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');        
-            tfd = tf(A{i},B{i},Ts);
-            hold on;
-            hbode = bodeplot(tfd);
-            setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[0 Fs/2]); %doc plotoptions
-        end
+        [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');
     else         
         for i = 1:length(Gm)
             disp(i)
-            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');            
+            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');
+            tfd = tf(a,b,Ts)
             hold on;
                 %[H,f]=freqz(A{i},B{i},N,Fs);
                 %[H{i} , f ] = freqz(A{i},B{i},N,Fs);
                 %plot(f,abs(H{i}));                    
             freqz(A{i},B{i},N,Fs);
-            %hold on;
-            %hold off;        
+         %hold on;
+           %hold off;        
         end         
     end %bodegen    
 end 

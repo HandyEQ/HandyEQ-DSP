@@ -1,0 +1,217 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Testbench for eq/shelving+notch filters</title><meta name="generator" content="MATLAB 8.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-02-25"><meta name="DC.source" content="eq_testbench1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Testbench for eq/shelving+notch filters</h1><!--introduction--><p>For frequency and impulse response analysis and</p><p>by Preben Thor&oslash;d - Gr 6 DAT096 - HandyEq - Chalmers University of Technology Using shelving() function by Jeff Tackett 08/22/05, Based on DAFX book and Z&ouml;lner calculations and formulas for biquad filters.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">System and analyzis parameters</a></li><li><a href="#2">Filter specification/ input parameters</a></li><li><a href="#3">SINGLE</a></li><li><a href="#4">Generate filter coefficient</a></li><li><a href="#5">Generate plot</a></li><li><a href="#7">Output and save plot</a></li></ul></div><h2>System and analyzis parameters<a name="1"></a></h2><pre class="codeinput">Fs = 41000; <span class="comment">%Hz</span>
+Fsw = Fs*2*pi;
+Ts=1/Fs;
+N = 1024; <span class="comment">%FFt window size</span>
+
+<span class="comment">% Single vs multiple filter curves</span>
+single = 1;
+<span class="comment">% Bode or freqz</span>
+bodegen = 1;
+FreqScale = <span class="string">'linear'</span>; <span class="comment">%'linear' or 'log'</span>
+</pre><h2>Filter specification/ input parameters<a name="2"></a></h2><pre class="codeinput">fc = 800; <span class="comment">% Cutoff frequency</span>
+Gs = 12;
+Gm = [-12 -9 -6 -3 0 3 6 9 12];  <span class="comment">% Gain in db</span>
+Q = 0.8; <span class="comment">% Q-factor</span>
+type = <span class="string">'Base_Shelf'</span>; <span class="comment">% 'Base_Shelf' or 'Treble_Shelf'</span>
+<span class="comment">% fc and G is dependent, if fc = 500, and G = 12  "damping_band = -12db</span>
+<span class="comment">% until 500Hz, then magnitude is -12db+3db  (Need to check out this logic</span>
+<span class="comment">% closer!!!!</span>
+</pre><h2>SINGLE<a name="3"></a></h2><pre class="codeinput"><span class="keyword">if</span> single == 0
+</pre><h2>Generate filter coefficient<a name="4"></a></h2><pre class="codeinput">    [b,a] = shelving(Gs, fc, Fs, Q, type);
+</pre><h2>Generate plot<a name="5"></a></h2><pre class="codeinput">    <span class="comment">%[H, f] = freqz(a,b,N,Fs);</span>
+    <span class="keyword">if</span> bodegen ==1
+        <span class="comment">%tfc = tf(a,b)</span>
+        tfd = tf(a,b,Ts)
+        <span class="comment">%bode(tfd) %Plots in rads/s</span>
+        <span class="comment">%bodeplot(tfd);</span>
+        hbode = bodeplot(tfd);
+        setoptions(hbode,<span class="string">'FreqUnits'</span>, <span class="string">'Hz'</span>,<span class="string">'FreqScale'</span>, FreqScale, <span class="string">'Xlim'</span>,[0 Fs/2]); <span class="comment">%doc plotoptions</span>
+
+
+    <span class="keyword">else</span>
+        freqz(a,b,N,Fs);
+    <span class="keyword">end</span>
+    <span class="comment">%%MULTIPLE</span>
+</pre><pre class="codeinput"><span class="keyword">else</span>
+    B = cell(1,length(Gm));
+    A = cell(1,length(Gm));
+    H = cell(1,length(Gm));
+    tfd = cell(1,length(Gm));
+    <span class="comment">%B=zeros(1,2);</span>
+    <span class="keyword">if</span> bodegen == 1
+        <span class="keyword">for</span> i = 1:length(Gm)
+            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, <span class="string">'Base_Shelf'</span>);
+            tfd = tf(A{i},B{i},Ts);
+            hold <span class="string">on</span>;
+            hbode = bodeplot(tfd);
+            setoptions(hbode,<span class="string">'FreqUnits'</span>, <span class="string">'Hz'</span>,<span class="string">'FreqScale'</span>, FreqScale, <span class="string">'Xlim'</span>,[0 Fs/2]); <span class="comment">%doc plotoptions</span>
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        <span class="keyword">for</span> i = 1:length(Gm)
+            disp(i)
+            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, <span class="string">'Base_Shelf'</span>);
+            hold <span class="string">on</span>;
+                <span class="comment">%[H,f]=freqz(A{i},B{i},N,Fs);</span>
+                <span class="comment">%[H{i} , f ] = freqz(A{i},B{i},N,Fs);</span>
+                <span class="comment">%plot(f,abs(H{i}));</span>
+            freqz(A{i},B{i},N,Fs);
+            <span class="comment">%hold on;</span>
+            <span class="comment">%hold off;</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span> <span class="comment">%bodegen</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="eq_testbench1_01.png" alt=""> <h2>Output and save plot<a name="7"></a></h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Testbench for eq/shelving+notch filters
+% For frequency and impulse response analysis and
+%
+% by Preben Thorød - Gr 6 DAT096 - HandyEq - Chalmers University of Technology
+% Using shelving() function by Jeff Tackett 08/22/05, Based on DAFX book
+% and Zölner calculations and formulas for biquad filters.
+
+%% System and analyzis parameters
+Fs = 41000; %Hz
+Fsw = Fs*2*pi;
+Ts=1/Fs;
+N = 1024; %FFt window size
+
+% Single vs multiple filter curves
+single = 1;  
+% Bode or freqz
+bodegen = 1;
+FreqScale = 'linear'; %'linear' or 'log'
+%% Filter specification/ input parameters
+fc = 800; % Cutoff frequency
+Gs = 12;
+Gm = [-12 -9 -6 -3 0 3 6 9 12];  % Gain in db
+Q = 0.8; % Q-factor
+type = 'Base_Shelf'; % 'Base_Shelf' or 'Treble_Shelf'
+% fc and G is dependent, if fc = 500, and G = 12  "damping_band = -12db
+% until 500Hz, then magnitude is -12db+3db  (Need to check out this logic
+% closer!!!!
+
+
+%% SINGLE 
+if single == 0 
+    %% Generate filter coefficient 
+    [b,a] = shelving(Gs, fc, Fs, Q, type);
+
+
+
+    %% Generate plot
+    %[H, f] = freqz(a,b,N,Fs);
+    if bodegen ==1
+        %tfc = tf(a,b)
+        tfd = tf(a,b,Ts)
+        %bode(tfd) %Plots in rads/s
+        %bodeplot(tfd);
+        hbode = bodeplot(tfd);
+        setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[0 Fs/2]); %doc plotoptions
+        
+        
+    else
+        freqz(a,b,N,Fs);
+    end
+    %%MULTIPLE
+else 
+    B = cell(1,length(Gm));
+    A = cell(1,length(Gm));
+    H = cell(1,length(Gm));
+    tfd = cell(1,length(Gm));
+    %B=zeros(1,2);
+    if bodegen == 1
+        for i = 1:length(Gm)            
+            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');        
+            tfd = tf(A{i},B{i},Ts);
+            hold on;
+            hbode = bodeplot(tfd);
+            setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[0 Fs/2]); %doc plotoptions
+        end
+    else         
+        for i = 1:length(Gm)
+            disp(i)
+            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');            
+            hold on;
+                %[H,f]=freqz(A{i},B{i},N,Fs);
+                %[H{i} , f ] = freqz(A{i},B{i},N,Fs);
+                %plot(f,abs(H{i}));                    
+            freqz(A{i},B{i},N,Fs);
+            %hold on;
+            %hold off;        
+        end         
+    end %bodegen    
+end 
+
+
+
+%% Output and save plot
+
+##### SOURCE END #####
+--></body></html>
