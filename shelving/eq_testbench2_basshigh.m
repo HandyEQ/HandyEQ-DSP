@@ -7,41 +7,48 @@
 % and Zölner calculations and formulas for biquad filters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% System and analyzis parameters
+%% Testbench options
+N = 1024;       %fft window size for freq analysis
+single = 1;     % Single(1) or multiple filter curves
+bodegen = 1;    % Bodeplot(1) or freqz (0)
+FreqScale = 'log'; %'linear' or 'log'
+
+%% System parameters
 Fs = 41000;     %Hz
 Fsw = Fs*2*pi;  %sample rate rad/s
 Ts=1/Fs;
 
-%Testbench options
-N = 1024;       %fft window size for freq analysis
-single = 1;     % Single(1) or multiple filter curves
-bodegen = 1;    % Bodeplot(1) or freqz (0)
-FreqScale = 'linear'; %'linear' or 'log'
-
-%% Filter specification/ input parameters
-fc = 800;       % Cutoff frequency
-Gs = 12;        % Single coeffisient set, gain in dB
-Gm = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
-Q = 0.8;                  % Q-factor
-type = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
-
-% fc and G is dependent, if fc = 500, and G = 12  "damping_band = -12db
-% until 500Hz, then magnitude is -12db+3db  
-% Need to check out this logic closer!!!!
+%% Filter specification input parameters
+    %% Treble shelving filter
+    fcTreb = 4500;       % Cutoff frequency
+    GsTreb = 12;        % Single coeffisient set, gain in dB
+    GmTreb = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
+    QTreb = 1.0;                  % Q-factor
+    typeTreb = 'Treble_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
+    
+    %% Bass shelving filter
+    fcBass = 500;       % Cutoff frequency
+    GsBass = 12;        % Single coeffisient set, gain in dB
+    GmBass = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
+    QBass = 0.8;                  % Q-factor
+    typeBass = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
 
 
 %% SINGLE COEFFISIENT SET
-if single == 0 
-    %% Generate filter coefficient 
-        [b,a] = shelving(Gs, fc, Fs, Q, type);
+if single == 1 
+    %% Generate filter coefficient         
+        [ATreb,BTreb] = shelving(GsTreb, fcTreb, Fs, QTreb, typeTreb);
+        [ABass,BBass] = shelving(GsBass, fcBass, Fs, QBass, typeBass);
     %% Generate plot
     if bodegen ==1
         %bodeplot
-        tfd = tf(a,b,Ts);   %Discrete transfer function
-        hbode = bodeplot(tfd);  
-        setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[1 Fs/2]);
+        tfdBass = tf(ABass,BBass,Ts)   %Discrete transfer function
+        tfdTreb = tf(ATreb,BTreb,Ts)   %Discrete transfer function       
+        tfdTot = series(tfdBass,tfdTreb)
+        hbode = bodeplot(tfdTot);  
+        setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]);
     else
-        %freqz plot
+        %freqz plot 
         freqz(a,b,N,Fs);
     end
     
