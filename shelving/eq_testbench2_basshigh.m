@@ -9,6 +9,8 @@
 
 
 %% 0225 TODO: for multiple:
+% CHECK AND VERIFY filter coeff order a vs b in every step, make consistent
+
 % Freqz not fixed, 
 % Way to plot total transferfunction, simplified
 % - Uneven nr of coeff vectors for the different filters
@@ -23,7 +25,7 @@
 
 %% Testbench options
 N = 1024;       %fft window size for freq analysis
-single = 0;     % Single(1) or multiple filter curves
+single = 1;     % Single(1) or multiple filter curves
 bodegen = 1;    % Bodeplot(1) or freqz (0)
 FreqScale = 'log'; %'linear' or 'log'
 
