@@ -15,7 +15,6 @@
 % plot
 
 % Coeff control for testbench(testbench1 first)
-% Need to verify coeff order for root locus plot
 
 %% Testbench options
 N = 1024;       %fft window size for freq analysis
@@ -117,14 +116,11 @@ else
             rlocus(BBass{i},ABass{i})  
             hold on;           
          end
-         title('Root Locus - Bass Filter')
-         
          subplot(2,1,2);
          for i = 1:GmTotLength %!!!!!!!!!!!!!!!!!!!
             rlocus(BTreb{i},ATreb{i})  
             hold on;           
          end
-         title('Root Locus - Treble Filter')
         hold off;
     end
 end 
