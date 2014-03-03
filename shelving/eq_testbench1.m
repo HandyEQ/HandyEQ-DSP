@@ -8,40 +8,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% TODO:
-% Coeff control for testbench(testbench1 first)
-%   -> Ok, improve testbench with freq spec analysis or something.
-%   -> generator
-% Change root locus plot to "plane()
+% Change root locus plot to zplane()
 %% Return values:
 %   a = [  1, a1, a2];
 %   b = [ b0, b1, b2];
 
 %% Testbench options
-N = 1024;       %fft window size for freq analysis
+N = 128;       %fft window size for freq analysis
 single = 0;     % Single(1) or multiple filter curves and coefficients
 bodegen = 1;    % Bodeplot(1) or freqz (0)
 rootlocus = 0;  % Show root locus plot
 FreqScale = 'log'; %'linear' or 'log'
+filterset = 0;  % 1 for bass filter, 0 for treble filter
 
-count = 0; % (for nextcoeff stepping)
 %% System parameters
 Fs = 41000;     %Hz
 Fsw = Fs*2*pi;  %sample rate rad/s
 Ts=1/Fs;
 
 %% Filter specification/ input parameters
-%fc = 1000;       % Cutoff frequency
-%fc = [200 500 3000 7000];
-fc = 800;
-Gs = -12;        % Single coeffisient set, gain in dB
-
-%Gm = [-24 -12 -9 -3 0];  % Coeffisient vector, multiple gain levels
-Gm = [12 9 6 3 0 -3 -6 -9 -12];
-%Gm = [0 -6 -12 -24];
-%Gm = [-12 -12 -12 -12];
-
-Q = 0.8;                  % Q-factor
-type = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
+%% Bass filter:
+if filterset == 1
+    %Bass shelving, different gain, constant fc
+    fc = 800;         % Cutoff frequency
+    %Gs = -12;        % Single coeffisient set, gain in dB
+    Gm = [12 9 6 3 0 -3 -6 -9 -12]; % Coeffisient vector, multiple gain levels
+    Q = 0.8;                  % Q-factor
+    type = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'    
+%% Treble filter:
+else    
+    fc = 3500;         % Cutoff frequency
+    %Gs = -12;         % Single coeffisient set, gain in dB
+    Gm = [12 9 6 3 0 -3 -6 -9 -12]; % Coeffisient vector, multiple gain levels
+    Q = 0.8;                  % Q-factor
+    type = 'Treble_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
+end
 
 %% SINGLE COEFFISIENT SET
 if single == 1 
@@ -73,16 +74,15 @@ else
     tfd = cell(1,N_coeff);
     if length(fc) > 1
         for i = 1:N_coeff        
-            [B{i}, A{i}] = shelving(Gm(i), fc(i), Fs, Q, 'Base_Shelf');        
+            [B{i}, A{i}] = shelving(Gm(i), fc(i), Fs, Q, type);        
             tfd{i} = tf(B{i},A{i},Ts);
         end
     else
         for i = 1:N_coeff
-            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, 'Base_Shelf');        
+            [B{i}, A{i}] = shelving(Gm(i), fc, Fs, Q, type);        
             tfd{i} = tf(B{i},A{i},Ts);
         end
     end
-
     
     % Plot:
     if bodegen == 1    
@@ -92,6 +92,7 @@ else
             hbode = bodeplot(tfd{i});
             setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]); %doc plotoptions
         end
+        hold off;
     else
         %freqz plot
         for i = 1:length(Gm)

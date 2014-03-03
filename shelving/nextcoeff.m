@@ -29,8 +29,13 @@ else
     set_param('singleBiquadTestbench2/Gain','Value',num2str(Gm(count)));
     
     
-    hbode = bodeplot(tfd{count});
-    setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]); %doc plotoptions
+   % hbode = bodeplot(tfd{count});
+   % setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]); %doc plotoptions
+   
+   %Very slow:
+   plotBodeHighlighted( tfd, count, Fs )
+    
+    
 end
 
 

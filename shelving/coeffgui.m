@@ -4,7 +4,7 @@
 % Note: When GUI is open, simulation is halted
 % Preben Thorød - HandyEQ - Chalmers University of Technology 2014
 
-num2str(Gm)
+num2str(Gm);
 indexlist = cell(1,N_coeff);
 
 for i = 1:N_coeff        
