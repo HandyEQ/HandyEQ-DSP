@@ -16,6 +16,7 @@
 
 % Coeff control for testbench(testbench1 first)
 % Need to verify coeff order for root locus plot
+% Change root locus plot to "plane()
 
 %% Testbench options
 N = 1024;       %fft window size for freq analysis
