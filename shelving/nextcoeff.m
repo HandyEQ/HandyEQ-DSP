@@ -1,4 +1,7 @@
-%function [ b, a ] = nextcoeff()
+% Script that select filter coefficients for simulink testbench
+% "singleBiquadTestbench2" by selecting the next coefficient set in list.
+% Preben Thorød - HandyEQ - Chalmers University of Technology 2014
+
 if exist('A') ~= 1
     error('ERROR: Multiple coefficient cell array is not initialized, please run eq_testbench1.m')
 else    
@@ -12,9 +15,6 @@ else
         count = 1;
     end
 
-       %b = B{count}; 
-       %a = A{count};
-
     disp('Changed gain gain to: ')   
     disp(Gm(count));
     
@@ -24,7 +24,6 @@ else
     end
     
     %test set param:
-    %bstring=mat2str(B{count})
     set_param('singleBiquadTestbench2/B_coeff','Value',mat2str(B{count}'));
     set_param('singleBiquadTestbench2/A_coeff','Value',mat2str(A{count}(2:3)'));
     set_param('singleBiquadTestbench2/Gain','Value',num2str(Gm(count)));
@@ -33,5 +32,5 @@ else
     hbode = bodeplot(tfd{count});
     setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]); %doc plotoptions
 end
-%end
+
 

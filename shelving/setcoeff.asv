@@ -1,0 +1,13 @@
+%function [ ] = setcoeff( coeffIndex )
+
+%if exist('A') ~= 1
+%    error('ERROR: Multiple coefficient cell array is not initialized, please run eq_testbench1.m')
+%else    
+
+
+    set_param('singleBiquadTestbench2/B_coeff','Value',mat2str(B{coeffIndex}'));
+    set_param('singleBiquadTestbench2/A_coeff','Value',mat2str(A{coeffIndex}(2:3)'));
+    set_param('singleBiquadTestbench2/Gain','Value',num2str(Gm(coeffIndex)));
+    
+%end
+

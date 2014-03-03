@@ -34,9 +34,12 @@ Ts=1/Fs;
 %fc = [200 500 3000 7000];
 fc = 800;
 Gs = -12;        % Single coeffisient set, gain in dB
-Gm = [-24 -12 -9 -3 0];  % Coeffisient vector, multiple gain levels
+
+%Gm = [-24 -12 -9 -3 0];  % Coeffisient vector, multiple gain levels
+Gm = [12 9 6 3 0 -3 -6 -9 -12];
 %Gm = [0 -6 -12 -24];
 %Gm = [-12 -12 -12 -12];
+
 Q = 0.8;                  % Q-factor
 type = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
 
