@@ -37,7 +37,7 @@ if filterset == 1
     type = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'    
 %% Treble filter:
 else    
-    fc = 3500;         % Cutoff frequency
+    fc = 3000;         % Cutoff frequency
     %Gs = -12;         % Single coeffisient set, gain in dB
     Gm = [12 9 6 3 0 -3 -6 -9 -12]; % Coeffisient vector, multiple gain levels
     Q = 0.8;                  % Q-factor
@@ -88,8 +88,8 @@ else
     if bodegen == 1    
         % Bode plot
         for i = 1:length(Gm)
-            hold on;
             hbode = bodeplot(tfd{i});
+            hold on;
             setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]); %doc plotoptions
         end
         hold off;
