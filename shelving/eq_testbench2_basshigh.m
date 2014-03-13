@@ -22,7 +22,7 @@
 N = 1024;       %fft window size for freq analysis
 single = 0;     % Single(1) or multiple filter curves
 bodegen = 1;    % Bodeplot(1) or freqz (0)
-rootlocus = 1;  % Show root locus plot
+rootlocus = 0;  % Show root locus plot
 FreqScale = 'log'; %'linear' or 'log'
 
 %% System parameters
@@ -35,7 +35,7 @@ Ts=1/Fs;
     
     %% Treble shelving filter
     %NB: Uneven number of filter coefficient is not handled yet!!!
-    fcTreb = 4500;       % Cutoff frequency
+    fcTreb = 5000;       % Cutoff frequency
     GsTreb = 12;        % Single coeffisient set, gain in dB
     %GmTreb = [0 0 0 0 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
     GmTreb = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
@@ -43,10 +43,10 @@ Ts=1/Fs;
     typeTreb = 'Treble_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
     
     %% Bass shelving filter
-    fcBass = 500;       % Cutoff frequency
-    GsBass = 12;        % Single coeffisient set, gain in dB
+    fcBass = 200;       % Cutoff frequency
+    GsBass = -12;        % Single coeffisient set, gain in dB
     GmBass = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
-    QBass = 0.8;                  % Q-factor
+    QBass = 1.0;                  % Q-factor
     typeBass = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf'
 
 
