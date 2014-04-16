@@ -1,0 +1,51 @@
+<html>
+<head>
+<div class="baselog">
+<link rel="stylesheet" href="file:////Applications/MATLAB_R2013b.app/toolbox/matlab/codetools/matlab-report-styles.css" type="text/css" />
+<style type="text/css" media="screen">
+div.treeview { white-space: nowrap; }
+.treeview img { border: 0px; vertical-align: middle; }
+.trigger { cursor: pointer; }
+.branch { display: none; margin-left: 22px; }
+span.lnnolink { cursor: pointer; color: blue; text-decoration: underline; padding: 1 }
+span.lnnonorm { color: grey; padding: 1 }
+span.textnorm { color: black; padding: 1 }
+span.textcmnt { color: green; padding: 1 }
+span.msglink { cursor: pointer; color: blue; text-decoration: underline }
+span.treelink { cursor: pointer; color: blue; text-decoration: underline }
+.error { color: red; }
+.fcflink { cursor: pointer; color: blue; text-decoration: underline }
+div.tooltip { visibility: hidden; position: fixed;
+  background-color: lightyellow; border: 1px solid black; }
+.td-linebottomrt-gray {border-bottom:1px solid #BBB; border-right:1px solid #BBB;background-color:#F0F0F0;}
+.td-linebottomrt-link {border-bottom:1px solid #BBB; border-right:1px solid #BBB;color:Blue;}
+</style>
+</div>
+<title>Code Generation Report For 'testiir'</title>
+</head>
+<body>
+<div class="report-head">MATLAB Coder Build Log</div><p/>
+<div class="baselog">
+<div class="grayline"></div>
+<table cellpadding="4" cellspacing="1"><tr>
+<td align="left" class="td-linebottomrt-gray" colspan="2">Build Parameters</td>
+</tr>
+<tr><td align="left" valign="top" class="td-linebottomrt">Build directory</td>
+<td align="left" valign="top" class="td-linebottomrt-link"><a href="matlab: cd('/Users/Johan/Documents/MATLAB/codegen/mex/testiir')">/Users/Johan/Documents/MATLAB/codegen/mex/testiir</a></td></tr>
+<tr><td align="left" valign="top" class="td-linebottomrt">Make wrapper</td>
+<td align="left" valign="top" class="td-linebottomrt-link">sh testiir_mex.sh</td></tr>
+</table>
+<br/>
+<table border="1" cellpadding="4" cellspacing="1" width="100%">
+<tr><td align="left" class="td-linebottomrt-gray">Build Log</td></tr>
+<tr><td valign="top" class="td-script">
+<pre>
+<span class="td-line-number">    1   </span><span class="td-line-normal">xcrun  -sdk macosx10.7  clang -c -fno-common -arch x86_64 -isysroot  -mmacosx-version-min=10.7  -fexceptions -DMX_COMPAT_32 -O2 -DNDEBUG  -I "/Applications/MATLAB_R2013b.app/simulink/include" -I "/Applications/MATLAB_R2013b.app/toolbox/shared/simtargets" -I "/Users/Johan/Documents/MATLAB" -I "/Users/Johan/Documents/MATLAB/codegen/mex/testiir" -I "/Users/Johan/Documents/MATLAB/codegen/mex/testiir/interface" -I "/Applications/MATLAB_R2013b.app/extern/include" -I "." "testiir_data.c"</span>
+<span class="td-line-number">    2   </span><span class="td-line-error">xcodebuild: error: SDK "macosx10.7" cannot be located.</span>
+<span class="td-line-number">    3   </span><span class="td-line-error">xcrun: error: unable to find utility "clang", not a developer tool or in PATH</span>
+<span class="td-line-number">    4   </span><span class="td-line-error">gmake: *** [testiir_data.o] Error 72</span>
+</pre>
+</td></tr></table>
+</div>
+</body>
+</html>
