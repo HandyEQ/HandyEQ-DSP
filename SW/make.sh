@@ -4,4 +4,4 @@
 
 
 #sparc-elf-gcc -o image src/main.c 
-gcc -o eqmainx86 src/main.c src/biquad.c src/eq1band.c src/eqtest.c src/eqcoeff.c src/dspsystem.c src/volume.c
+gcc -o eqmainx86 src/dspsystemmain.c src/biquad.c src/eq1band.c src/eqtest.c src/eqcoeff.c src/dspsystem.c src/volume.c
