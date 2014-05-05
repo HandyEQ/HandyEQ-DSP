@@ -1,0 +1,54 @@
+#ifndef BIQUAD_H
+#define BIQUAD_H
+
+/*Structure holding filter coefficient and relevant information */
+struct BiquadCoeff;
+typedef struct {
+    char datatype[6];
+    //unsigned int datadepth;
+    char filtertype[13];
+    char fc[8];
+    char gain[5];
+    char q;    
+    int scalefactor;
+	   
+    int a0;
+    int a1;
+    int a2;
+    int b0;
+    int b1;
+    int b2;
+    int g1;
+    int g2;
+}BiquadCoeff;
+
+struct BiquadStage;
+typedef struct {
+	char name[10];
+	//pointer to BiquadCoeff
+	//input
+	int xmem1; 
+	int xmem2;
+	int ymem1;
+	int ymem2;
+	int y_upscaled;
+	//output
+
+}BiquadStage;
+
+////////void printBiquadInfo(); 
+//Print current (input,output?), coeffisients and delayline content
+//input arguments: Pointer to BiquadStage
+
+
+/////void runBiquad(); //function that actually runs through algorithm(and containing it) //Takes Biquad stage as input
+
+
+
+
+//void printCoeff_manual();
+//void printCoeff(BiquadCoeff bq);
+
+//Should make it generic pointer as argument.
+
+#endif

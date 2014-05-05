@@ -1,0 +1,21 @@
+//TULL OG TØYS
+//http://picascii.com/:	 
+printf("       .                                                                              \n");
+printf("       @                                                                              \n");
+printf("       @                                       @               +@                     \n");
+printf("       @                          +#           @'''';       @@.                       \n");
+printf("       @                          @``          .          @'  .                       \n");
+printf("       @                          @ `          .         @     @                      \n");
+printf("       @                          , `     +@   .         @      ;                     \n");
+printf("       :#@@,  @```` @  , @         @`    + @   :,,#@,    @       @                    \n");
+printf("       @    @ @     @  : +@        '` #  @ '             '       @                    \n");
+printf("       @    @  @   .#   @` @  @'@   # @  @.   `           ,    # @                    \n");
+printf("       @    @  .##@  @  :   @ @    .'  , @#   .           @    : @                    \n");
+printf("       @    :        #      : @ @. @   @ #+    ,          @     @@                    \n");
+printf("       :    :         .`     ` @@+@     +#     @           @     @                    \n");
+printf("       :                           #     +     #            @@@@@@#                   \n");
+printf("                                    @    +     +                  `;                  \n");
+printf("                                     @   +     '@@@@@              '                  \n");
+printf("                                      @  +                          @                 \n");
+printf("                                       + '                           @                \n");
+printf("                                        +.                            #,              \n");

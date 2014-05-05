@@ -1,0 +1,29 @@
+#ifndef EQ_H
+#define EQ_H
+
+struct BiquadCoeff;
+typedef struct {
+    char datatype[6];
+    unsigned int datadepth;
+    char filtertype[13];
+    char fc[8];
+    char gain[5];
+    int scalefactor;    
+	//signed int gain;
+	// Q-factor?
+    int a0;
+    int a1;
+    int a2;
+    int b0;
+    int b1;
+    int b2;
+    int g1;
+    int g2;
+}BiquadCoeff;
+
+
+void printCoeff_manual();
+void printCoeff(BiquadCoeff bq);
+//Should make it generic pointer as argument.
+
+#endif

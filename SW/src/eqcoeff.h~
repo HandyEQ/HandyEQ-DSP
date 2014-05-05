@@ -1,0 +1,24 @@
+/* eqcoeff.h */
+/* Fixed point coefficients for use with 3band equalizer*/
+/* For use with HandyEQ project MPEES-1 DAT096 Group6	*/
+/* Preben Thorod @ HandyEQ                              */
+/* Generated: 29 April 2014 20:23:12 */
+
+
+//#include "eq.h" //!!!!!!To be replaced by "biquad.h"
+#include "biquad.h" //!!!!!!To be replaced by "biquad.h"
+
+#ifndef EQCOEFF_H
+#define EQCOEFF_H
+
+/* Global coefficient structs: */
+
+BiquadCoeff treble;
+
+/* Function prototypes */
+void initCoeff();
+
+#endif
+
+
+

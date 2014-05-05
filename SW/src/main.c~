@@ -1,0 +1,62 @@
+/* Testbench for equalizer v1  */
+/* 6/4: Designed for test and verify one stage 2nd order IIR in TSIM */
+/* Preben Thorod, MPEES-1 DAT096 - Group 6 "HandyEQ" */
+
+
+////// REMEMBER TO UPDATE MAKEFILE!!!!! ////////
+
+#include <stdio.h>
+#include "biquad.h"
+#include "eqcoeff.h"
+#include "fx.h"
+#include "fx1.h"
+
+#define BUFFERLENGTH	64
+
+//void updatenum(*int numptr,a);
+void updatenum(int *numptr,int a) {
+	*numptr = a;
+ }
+
+int main() {
+	/* Initialization */	
+	typedef int buffer_t[BUFFERLENGTH];
+	buffer_t inbuffer = {	16384,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 
+				0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+				0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+				0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0};
+	buffer_t outbuffer ={ 	0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+				0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+				0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+				0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0};
+	/* Start */
+	printf("Started tesbench for single stage 2n order IIR filter\n\n");
+	initCoeff();
+
+
+	BiquadStage stage1;
+	stage1.xmem1 = 100;
+	//printf("wmem1 = %i",stage1.xmem1);
+	
+	int num;
+	int *numptr;
+	numptr = &num;
+	
+	printf("num = %i",num);
+	printf("Running update");
+	updatenum(numptr,10);
+	printf("new: num = %i",num);
+
+	
+	
+
+	
+	
+	
+
+	
+	
+	
+	return 0;
+
+}

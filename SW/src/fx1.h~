@@ -1,0 +1,22 @@
+#ifndef FX1_H
+#define FX1_H
+
+
+/* Global decleration: */
+AudioEffect fx1; 
+int xmem1; 
+int xmem2;
+int ymem1;
+int ymem2;
+int y_upscaled
+
+/* Function declaration */
+
+//run algorithm:
+int runfx1();
+
+//init
+int initfx1(); //SHould add name and initvalues for input and output!
+
+
+#endif

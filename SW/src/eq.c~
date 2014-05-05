@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include "eq.h"
+#include "eqcoeff.h"
+//#include <strings.h>
+/* Debug functions */
+
+
+void printCoeff_manual(){
+
+	printf("EQ: Coefficients:\n");	
+	
+	printf("EQ: treble.datatype = %s\n",treble.datatype);
+	printf("EQ: treble.datadepth = %d\n",treble.datadepth);
+	printf("EQ: treble.filtertype = %s\n",treble.filtertype);
+	printf("EQ: treble.fc = %s\n",treble.fc);
+	printf("EQ: treble.gain = %s\n",treble.gain);
+
+  	printf("EQ: treble.a0 = %d\n",treble.a0);
+	printf("EQ: treble.a1 = %d\n",treble.a1);
+	printf("EQ: treble.a2 = %d\n",treble.a2);
+	printf("EQ: treble.b0 = %d\n",treble.b0);
+	printf("EQ: treble.b1 = %d\n",treble.b1);
+	printf("EQ: treble.b2 = %d\n",treble.b2);
+	printf("EQ: treble.g1 = %d\n",treble.g1);
+	printf("EQ: treble.g2 = %d\n",treble.g2);
+};
+
+void printCoeff(BiquadCoeff bq){
+
+	printf("EQ: Coefficients:\n");	
+	
+	printf("EQ: datatype = %s\n",bq.datatype);
+	printf("EQ: datadepth = %d\n",bq.datadepth);
+	printf("EQ: filtertype = %s\n",bq.filtertype);
+	printf("EQ: fc = %s\n",bq.fc);
+	printf("EQ: gain = %s\n",bq.gain);
+
+  	printf("EQ: a0 = %d\n",bq.a0);
+	printf("EQ: a1 = %d\n",bq.a1);
+	printf("EQ: a2 = %d\n",bq.a2);
+	printf("EQ: b0 = %d\n",bq.b0);
+	printf("EQ: b1 = %d\n",bq.b1);
+	printf("EQ: b2 = %d\n",bq.b2);
+	printf("EQ: g1 = %d\n",bq.g1);
+	printf("EQ: g2 = %d\n",bq.g2);
+};

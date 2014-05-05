@@ -1,0 +1,23 @@
+
+num2str(Gm)
+indexlist = cell(1,N_coeff);
+
+for i = 1:N_coeff        
+    indexlist{i} = num2str(Gm(i));
+end
+selected = menu('select gain:', indexlist)
+setcoeff(selected, A, B, Gm);
+opts = bodeoptions;
+hbode = bodeplot(tfd{selected});  
+setoptions(hbode,'FreqUnits', 'Hz','FreqScale', FreqScale, 'Xlim',[10 Fs/2]);
+
+
+%opts = bodeoptions
+%opts.YLim = {[-100,10];[-360,0]}; %{maglimits;phaselimits}
+%opts.YLimMode = {'manual';'auto'}; %{maglimits mode;phaselimits mode}
+%h = bodeplot(sys2,opts)
+
+
+
+
+

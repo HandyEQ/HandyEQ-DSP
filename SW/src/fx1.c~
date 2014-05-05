@@ -1,0 +1,48 @@
+//////////////////////////////////////////////////
+/*		fx1.c									*/
+/* Direct form 1 IIR biquad filter for EQ 		*/
+/*												*/
+/* HandyEQ - Group 6 - Preben Thorød			*/
+/*												*/
+/* 		April 2014								*/
+/* H(z) = (b0*z^-0 + b1*z^-1 + b2*z^-2) /		*/
+/*		(1 + a1*z^-1 + a2*z^-2)					*/
+/*												*/
+/*	y(n) = b0*x(n) + b1*x(n-1) + a2*x(n-2) - a1*y(n-1) - a2*y(n-2)	*/
+/*												*/
+/*												*/
+//////////////////////////////////////////////////
+/*	x=fx1.in y=fx1.out b1=treble.b1		*/
+
+#include "fx.h"
+#include "fx1.h"
+//#include "eq.h"
+#include "eqcoeff.h"
+
+
+
+/*	Algorithm function */
+int runfx1() { 			//(input argument could be number of iterations...)
+
+
+	y_upscaled = treble.b0*fx1.in + treble.b1*xmem1 + treble.b2*xmem2 - treble.a1*ymem1 - treble.a2*ymem2;
+	fx1.out = y_upscaled / treble.scalefactor; // Scale down relative to coefficient upscaling
+
+        //shift delay line:
+        xmem2 = xmem1;
+        ymem2 = ymem1;
+        xmem1 = fx1.in;
+        ymem1 = fx1.out;
+
+	return 0;
+	
+}
+
+int initfx1(){
+	xmem1 = 0;
+	xmem2 = 0;
+	ymem1 = 0;
+	ymem2 = 0;
+	y_upscaled = 0;
+	return 0;
+}

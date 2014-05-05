@@ -1,0 +1,27 @@
+#COMPILER=sparc-elf-gcc
+
+SRC_FILES=main.c eq.c eqcoeff.c
+OBJ_FILES=$(patsubst %.c, %.o, ${SRC_FILES})
+DEP_FILES=$(patsubst %.c, %.dep, ${SRC_FILES})
+VPATH = src
+
+# (v8 architecture for later)
+CFLAGS = -c -g
+LDFLAGS = -g
+
+
+image : ${OBJ_FILES}
+	sparc-elf-gcc ${LDFLAGS} -o image ${OBJ_FILES}
+
+%.o:%.c
+	sparc-elf-gcc ${CFLAGS} -o $@ $
+
+clean:	
+	rm image
+
+include ${DEP_FILES}
+
+%.dep: %.c
+	@set -e; rm -f  $@; \
+	sparc-elf-gcc -MM $(CFLAGS) $< > $@.$$$$ > $@;\
+	rm -f $@.$$$$
