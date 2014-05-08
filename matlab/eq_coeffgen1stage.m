@@ -63,7 +63,7 @@ fprintfixedpoint = 1;       % Ouputs fixed point coefficients to infofile
 fprintfixedpointheader = 1; % generates eqcoeff.c source file with coefficients.
 
 %% CHOOSE FILTER TYPE:
-filterset = 3;          %1=bass,2=notch,3=treble
+filterset = 2;          %1=bass,2=notch,3=treble
                                             
 
 
@@ -74,8 +74,8 @@ if filterset == 1
     %% Bass shelving filter:
     %Bass shelving, different gain, constant fc
     fc = 200;         % Cutoff frequency  %% Unstable on low frequencies (<200..?) 500OK!
-    G = 18;        % Single coeffisient set, gain in dB
-%     G = [12 9 6 3 0 -3 -6 -9 -12]; % Coeffisient vector, multiple gain levels
+%     G = 18;        % Single coeffisient set, gain in dB
+    G = [12 9 6 3 0 -3 -6 -9 -12]; % Coeffisient vector, multiple gain levels
     Q = 0.8;                  % Q-factor
     filtertype = 'Base_Shelf';      % 'Base_Shelf' or 'Treble_Shelf' 
 end
@@ -85,7 +85,7 @@ if filterset == 2
 
     % Extreme Q and gain settings seems to work, but careful with low
     % frequencies combined with low Q! (Can get significant LF boost
-    fc = 3000;       % Cutoff frequency
+    fc = 1000;       % Cutoff frequency
     %G = -15;        % Single coeffisient set, gain in dB
     G = [-12 -9 -6 -3 0 3 6 9 12];  % Coeffisient vector, multiple gain levels
     Q = 5.6;                  % Q-factor 
@@ -120,7 +120,7 @@ fractionaldatatype = sprintf('Q%i.%i',integerbits,fractionalbits)
 if filterset == 1
     filterstructname = 'bass';
 elseif filterset == 2 
-    filterstructname = 'notch';
+    filterstructname = 'midrange';
 elseif filterset == 3
     filterstructname = 'treble';
 else
